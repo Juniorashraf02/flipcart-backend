@@ -21,7 +21,7 @@ const userRouter = require("../routes/userRoute/userAuth");
 app.use(cors());
 app.use(express.json());
 
-app.use('/api/v1', userRouter)
+app.use('/api', userRouter)
 
 
 
