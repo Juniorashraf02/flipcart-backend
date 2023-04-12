@@ -13,8 +13,6 @@ exports.signup = async (req, res, next) => {
   User.findOne({ email: req.body.email }).then(async (emailAlreadyExists) => {
     //exec is outdated and .then and .catch is used now alse  .then only gives one props
 
-
-
     try {
       if (emailAlreadyExists) {
         return res.status(400).json({
@@ -55,9 +53,6 @@ exports.signup = async (req, res, next) => {
         });
       }
     } catch (error) {
-
-
-
       return res.status(400).json({
         status: "failed",
         message: "Something went wrong while registering!",
@@ -68,3 +63,40 @@ exports.signup = async (req, res, next) => {
 };
 
 //! try catch used for solving server crashing while facing any error
+
+// user sign in controller
+exports.signin = (req, res) => {
+  User.findOne({ email: req.body.email }).then(async (emailAlreadyExists) => {
+    try {
+      if (!emailAlreadyExists) {
+        return res.status(400).json({
+          status: "failed",
+          message: "Please register first to login!!!",
+        });
+      } else {
+        if (req.body.hash_password && emailAlreadyExists.role === "user") {
+          const token = generateToken(
+            emailAlreadyExists._id,
+            emailAlreadyExists.role
+          );
+          const { _id, firstName, lastName, email, role, fullName } =
+            emailAlreadyExists;
+          res.status(200).json({
+            token,
+            user: { _id, firstName, lastName, email, role, fullName },
+          });
+        } else {
+          return res.status(400).json({
+            message: "Something went wrong",
+          });
+        }
+      }
+    } catch (error) {
+      return res.status(400).json({
+        status: "failed",
+        message: "Something went wrong while login!",
+        error: error,
+      });
+    }
+  });
+};
