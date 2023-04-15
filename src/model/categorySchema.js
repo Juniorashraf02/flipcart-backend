@@ -4,12 +4,12 @@ const categorySchema = new mongoose.Schema(
     {
         name: {
             type: String,
-            require: [true, "Category name required"],
+            required: [true, "Category name required"],
             trim: true,
         },
         slug: {
             type: String,
-            require: true,
+            required: true,
             unique: true,
         },
         // when we add sub categories then we need to specify the parent id

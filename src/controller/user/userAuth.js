@@ -20,7 +20,7 @@ exports.signup = async (req, res, next) => {
           message: "This Email already exists..!!!",
         });
       } else {
-        const data = await User.create(req.body);
+        const data = await User.create(req.body);  //no codition can be apply in this method
 
         // const user = new User(req.body);
         // const data = await user.save();
